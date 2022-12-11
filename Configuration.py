@@ -3,7 +3,7 @@
 import Arithmetic_Functions as Arethmetics
 
 # A dictionary of every operator and its priority
-priority = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5, '~': 6, '!': 6, '#': 6}
+priority = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '%': 4, '$': 5, '&': 5, '@': 5, '~': 6, '!': 6, '#': 6, '(': 7}
 
 # A dictionary of every operator and its function
 arithmetic_function = {'+': Arethmetics.add, '-': Arethmetics.sub, '*': Arethmetics.mul, '/': Arethmetics.div,
@@ -14,3 +14,10 @@ arithmetic_function = {'+': Arethmetics.add, '-': Arethmetics.sub, '*': Arethmet
 # A dictionary of every operator and its position
 position = {'+': "mid", '-': "mid", '*': "mid", '/': "mid", '^': "mid", '%': "mid", '$': "mid",
             '&': "mid", '@': "mid", '~': "lef", '!': "right", '#': "right"}
+
+# A list of all white spaces
+white_spaces = [" ", "\t", "\n"]
+
+# A list of all legal elements in the given mathematical expression
+legal_elements = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '+', '-', '*', '/', '^', '%', '$', '&',
+                  '@', '~', '!', '#', '(', ')']
