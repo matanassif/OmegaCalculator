@@ -47,7 +47,10 @@ def power(first_number: float, second_number: float) -> float:
     :param second_number: The exponent of the power
     :return: The result of first_number in the power of second_number
     """
-    return first_number ** second_number
+    result = first_number ** second_number
+    if isinstance(result, complex):
+        raise...
+    return result
 
 
 def modulo(first_number: float, second_number: float) -> float:
