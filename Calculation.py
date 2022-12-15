@@ -37,7 +37,13 @@ def convert_to_postfix(expression: list) -> list:
         else:
             while len(operators) != 0 and Config.priority[operators[-1]] >= Config.priority[element]:
                 if operators[-1] != '(':
-                    postfix_list.append(operators.pop(-1))
+
+                    # If the element is an operator which is positioned from the left, then it should be added after
+                    # there is at least one number in the list, since only a number can be in index 0 in postfix
+                    if element in Config.operators and Config.position[element] == "left" and len(postfix_list) == 0:
+                        break
+                    else:
+                        postfix_list.append(operators.pop(-1))
                 else:
                     break
 
