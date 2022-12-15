@@ -44,24 +44,27 @@ def convert_chars_to_numbers(expression: list) -> list:
     while expression_index < len(expression):
         string_number = ""
 
+        # Converts chars to a string of a number
         while expression_index < len(expression) and (expression[expression_index].isnumeric() or
                                                       expression[expression_index] == '.'):
             if expression[expression_index] == '.':
                 decimal_point_number += 1
                 if decimal_point_number > 1:
-                    pass
+                    raise...
 
             string_number += expression[expression_index]
             expression_index += 1
 
-        if decimal_point_number > 0:
-            pass
-
+        # Converts the  string of a number to float
         if string_number != "":
+            if string_number == ".":
+                raise...
             converted_numbers_expression.append(float(string_number))
 
+        # Adding if expression[expression_index] is not a number
         if expression_index < len(expression):
             converted_numbers_expression.append(expression[expression_index])
+
         expression_index += 1
 
     return converted_numbers_expression
@@ -69,17 +72,37 @@ def convert_chars_to_numbers(expression: list) -> list:
 
 def unary_minus_to_tilda(expression: list) -> list:
     """
-    Switches unary minuses to a tilda
+    Switches unary minuses to a tilda and convert even amount of '-' to '+' and odd amount of '-' to '-'
+    according to way number 2
     :param expression: The mathematical expression
     :return: The mathematical expression which every unary minus becomes a tilda
     """
     removed_additional_minuses = list()
-
-    for index in range(len(expression)):
+    expression_index = 0
+    while expression_index < len(expression):
         # If a minus comes after another minus or a tilda, it is an unary minus
-        if index > 0 and expression[index] == '-' and (expression[index - 1] == '-' or expression[index - 1] == '~' or
-                                                       expression[index - 1] == '('):
-            removed_additional_minuses.append('~')
+        if expression[expression_index] == '-':
+
+            # The minus is not unary and should be converted to '-' or '+' depending on the amount of minuses
+            if expression_index > 0 and type(expression[expression_index-1]) == float:
+                minus_counter = 0
+                while expression_index < len(expression) and expression[expression_index] == '-':
+                    minus_counter += 1
+                    expression_index += 1
+
+                expression_index -= 1
+                if minus_counter % 2 == 0:
+                    removed_additional_minuses.append('-')
+                else:
+                    removed_additional_minuses.append('+')
+
+            # The minus is unary
+            else:
+                removed_additional_minuses.append('~')
+
         else:
-            removed_additional_minuses.append(expression[index])
+            removed_additional_minuses.append(expression[expression_index])
+
+        expression_index += 1
+
     return removed_additional_minuses
