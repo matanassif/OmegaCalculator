@@ -13,7 +13,7 @@ arithmetic_function = {'+': Arithmetics.add, '-': Arithmetics.sub, '*': Arithmet
 
 # A dictionary of every operator and its position
 position = {'+': "mid", '-': "mid", '*': "mid", '/': "mid", '^': "mid", '%': "mid", '$': "mid",
-            '&': "mid", '@': "mid", '~': "left", '!': "right", '#': "right"}
+            '&': "mid", '@': "mid", '~': "left", '!': "right", '#': "right", '(': None, ')': None}
 
 # A list of all white spaces
 white_spaces = [" ", "\t", "\n"]
@@ -24,3 +24,12 @@ legal_elements = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '+
 
 # A list of all legal operators
 operators = ['+', '-', '*', '/', '^', '%', '$', '&', '@', '~', '!', '#', '(', ')']
+
+# A list of all the operators which allowed to be in the beginning of the expression
+beginning_operators = ['-', '~', '(']
+
+# A list of all the operators which allowed to be in the end of the expression
+end_operators = ['!', '#', ')']
+
+# A list of all the operators which allowed to be in next to in a row
+in_a_row_operators = ['-', '!']
