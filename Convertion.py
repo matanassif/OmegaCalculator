@@ -11,9 +11,18 @@ def remove_white_spaces(expression: str) -> str:
     :return: The mathematical expression without white spaces (\t, \n and spaces)
     """
     removed_white_spaces = ""
+
+    # Checking if the expression is empty
+    if expression == "":
+        raise Exceptions.EmptyExpressionException("The expression can not be empty")
+
     for element in expression:
         if element not in Config.white_spaces:
             removed_white_spaces += element
+
+    # Checking if the expression contains only white spaces
+    if removed_white_spaces == "":
+        raise Exceptions.OnlyWhiteSpacesException("The expression can not contain only white spaces")
 
     return removed_white_spaces
 

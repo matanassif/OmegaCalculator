@@ -13,7 +13,7 @@ def check_legal_elements(expression: str):
     """
     for element in expression:
         if element not in Config.legal_elements:
-            raise...
+            raise Exceptions.IllegalElementException(f"The element: {element} is illegal")
 
 
 def amount_of_bracket(expression: str):
@@ -251,7 +251,7 @@ def check_opening_bracket(current: str, previous_element, next_element):
                                                   f"after a left positioned operator or a number")
 
     # The next element can be only a number or a left positioned operator or a beginning operator
-    elif Config.position[next_element] != "left" and type(next_element) != float \
+    elif type(next_element) != float and Config.position[next_element] != "left" \
             and next_element not in Config.beginning_operators:
 
         raise Exceptions.NextElementException(f"The element {current} should be followed by "
@@ -267,14 +267,15 @@ def check_closing_bracket(current: str, previous_element, next_element):
     :return: Raises an error if needed
     """
     # The previous element can be only a number or a left positioned operator or an end operator
-    if Config.position[next_element] != "right" and type(next_element) != float \
-            or previous_element not in Config.end_operators:
+    if previous_element is not None and type(previous_element) != float and \
+            Config.position[previous_element] != "right" and previous_element not in Config.end_operators:
 
         raise Exceptions.PreviousElementException(f"The element {current} should be "
                                                   f"after a right positioned operator or a number")
 
     # The next element can be only a number or a left positioned operator or a mid positioned operator
-    elif next_element is not None and type(next_element) != float or Config.position[next_element] != "left":
+    elif next_element is not None and Config.position[next_element] != "right" \
+            and Config.position[next_element] != "mid":
 
         raise Exceptions.NextElementException(f"The element {current} should be followed by "
                                               f"a right positioned operator or a number")
@@ -333,7 +334,10 @@ def operator_operand_order(expression: list):
 
         # Checking if exist previous and next elements
         # If one of them does not exist, it will be None (only the first and last elements)
-        if index == 0:
+        if index == 0 and index == len(expression) - 1:
+            previous_element = None
+            next_element = None
+        elif index == 0:
             previous_element = None
             next_element = expression[index + 1]
         elif index == len(expression) - 1:
@@ -390,6 +394,10 @@ def validate_and_convert(expression: str) -> list:
         infix_expression_list = Convert.unary_minus_to_tilda(infix_expression_list)
         return infix_expression_list
 
+    except Exceptions.EmptyExpressionException as eee:
+        print(str(eee))
+    except Exceptions.OnlyWhiteSpacesException as owse:
+        print(str(owse))
     except Exceptions.IllegalElementException as iee:
         print(str(iee))
     except Exceptions.AmountOfBracketsException as aobe:

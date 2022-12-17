@@ -24,6 +24,22 @@ class IllegalElementException(Exception):
         super().__init__(message)
 
 
+class EmptyExpressionException(Exception):
+    """
+    The exception is raised when the expression is empty
+    """
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class OnlyWhiteSpacesException(Exception):
+    """
+    The exception is raised when the expression contains only white spaces
+    """
+    def __init__(self, message):
+        super().__init__(message)
+
+
 class AmountOfBracketsException(Exception):
     """
     The exception is raised when the amount of opening brackets is not equal to the amount of closing brackets
