@@ -1,6 +1,7 @@
 # This file contains the functions which convert the mathematical expression to an easier expression to calculate
 
 import Configuration as Config
+import Exceptions
 
 
 def remove_white_spaces(expression: str) -> str:
@@ -30,7 +31,7 @@ def convert_to_list(expression: str) -> list:
     return list_expression
 
 
-def convert_chars_to_numbers(expression: list) -> list:
+def convert_chars_to_numbers(expression: str) -> list:
     """
     Converts all the chars which contain a number to the true float number.
     If there is more than one decimal point in a number, the custom exception OneDecimalPointException raises.
@@ -50,7 +51,9 @@ def convert_chars_to_numbers(expression: list) -> list:
             if expression[expression_index] == '.':
                 decimal_point_number += 1
                 if decimal_point_number > 1:
-                    raise...
+                    raise Exceptions.OneDecimalPointException(f"The is more than one decimal point "
+                                                              f"at index: {expression_index} "
+                                                              f"in the expression: {expression}")
 
             string_number += expression[expression_index]
             expression_index += 1
@@ -58,7 +61,9 @@ def convert_chars_to_numbers(expression: list) -> list:
         # Converts the  string of a number to float
         if string_number != "":
             if string_number == ".":
-                raise...
+                raise Exceptions.DecimalPointWithoutNumberException(f"There is a decimal point without a number "
+                                                                    f"at index: {expression_index} "
+                                                                    f"in the expression: {expression}")
             converted_numbers_expression.append(float(string_number))
 
         # Adding if expression[expression_index] is not a number

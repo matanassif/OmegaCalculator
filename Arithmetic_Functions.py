@@ -1,5 +1,8 @@
 # This file contains all the required arithmetic functions
 
+import Exceptions
+
+
 def add(first_number: float, second_number: float) -> float:
     """
     Adds the two given numbers
@@ -37,7 +40,10 @@ def div(first_number: float, second_number: float) -> float:
     :param second_number: A number which is used as an operand for division
     :return: The result of the division of the two given numbers
     """
-    return first_number / second_number
+    try:
+        return first_number / second_number
+    except ZeroDivisionError as zde:
+        print(str(zde))
 
 
 def power(first_number: float, second_number: float) -> float:
@@ -49,7 +55,7 @@ def power(first_number: float, second_number: float) -> float:
     """
     result = first_number ** second_number
     if isinstance(result, complex):
-        raise...
+        raise Exceptions.ComplexNumberException("The calculator does not support complex numbers")
     return result
 
 

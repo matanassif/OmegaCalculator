@@ -1,6 +1,7 @@
 # This file contains the functions which convert to postfix and calculates the final result
 
 import Configuration as Config
+import Exceptions
 
 
 # The function converts the mathematical expression to a postfix form of expression
@@ -96,5 +97,11 @@ def calculating(expression: list) -> float:
     :param expression: mathematical expression in infix form
     :return: Result of the mathematical expression
     """
-    postfix_form = convert_to_postfix(expression)
-    return calculate_postfix(postfix_form)
+    try:
+        postfix_form = convert_to_postfix(expression)
+        print(calculate_postfix(postfix_form))
+        return calculate_postfix(postfix_form)
+    except Exceptions.ComplexNumberException as cne:
+        print(str(cne))
+    except Exceptions.FactorialException as fe:
+        print(str(fe))
