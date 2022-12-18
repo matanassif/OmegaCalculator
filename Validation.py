@@ -31,10 +31,10 @@ def amount_of_bracket(expression: str):
             closing_bracket_amount += 1
 
     if opening_bracket_amount != closing_bracket_amount:
-        raise...
+        raise Exceptions.AmountOfBracketsException("The amount of opening bracket is not equal to the amount of closing brackets")
 
 
-def check_tilda(expression: str):
+def check_tilda(expression: list):
     """
     Checks if after a tilda there is another tilda before a number comes
     :param expression: The mathematical expression in list form
@@ -106,7 +106,7 @@ def operator_operand_order_right(current: str, previous_element, next_element):
         raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning")
 
     # Before the element must be a number or a right positioned operator or a closing bracket
-    elif type(previous_element) != float and Config.position[previous_element] != "right":
+    elif type(previous_element) != float and Config.position[previous_element] != "right" and previous_element != ')':
         validation_previous_right(current, previous_element)
 
     # After the element must be a number or a mid positioned operator or an opening bracket
@@ -213,16 +213,14 @@ def validation_next_mid(current: str, next_element):
     raise Exceptions.NextElementException(message)
 
 
-def check_minus(current: str, previous_element, next_element):
+def check_minus(next_element):
     """
     Checks the validation of the minus (-) operator
-    :param current: The current element in the expression
-    :param previous_element: The previous element in the expression
     :param next_element: The next element in the expression
     :return: Raises an error if needed
     """
-    if type(next_element) != float and \
-            (Config.position[next_element] == "mid" or Config.position[next_element] == "right"):
+    if type(next_element) != float and next_element != '-' and (Config.position[next_element] == "mid" or
+                                                                Config.position[next_element] == "right"):
         raise Exceptions.NextElementException("After minus can not be a mid or right positioned operator")
 
 
@@ -239,7 +237,7 @@ def operator_operand_order_mid(current: str, previous_element, next_element):
         raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning or the end")
 
     elif current == '-':
-        check_minus(current, previous_element, next_element)
+        check_minus(next_element)
 
     # Before the operator must be a number or a right positioned operator or a closing bracket
     elif previous_element is not None and type(previous_element) != float \
@@ -262,7 +260,7 @@ def check_opening_bracket(current: str, previous_element, next_element):
     """
     # The previous element can be only a number or a right positioned operator or a mid positioned operator
     if previous_element is not None and Config.position[previous_element] != "left" \
-            and Config.position[previous_element] != "mid":
+            and Config.position[previous_element] != "mid" and previous_element != '(':
 
         raise Exceptions.PreviousElementException(f"The element {current} should be "
                                                   f"after a left positioned operator or a number")
@@ -291,8 +289,8 @@ def check_closing_bracket(current: str, previous_element, next_element):
                                                   f"after a right positioned operator or a number")
 
     # The next element can be only a number or a left positioned operator or a mid positioned operator
-    elif next_element is not None and Config.position[next_element] != "right" \
-            and Config.position[next_element] != "mid":
+    elif next_element is not None and type(next_element) != float and Config.position[next_element] != "right" \
+            and Config.position[next_element] != "mid" and next_element != ')':
 
         raise Exceptions.NextElementException(f"The element {current} should be followed by "
                                               f"a right positioned operator or a number")
@@ -398,11 +396,11 @@ def validate_and_convert(expression: str) -> list:
         # Checks if the amount of opening bracket is equal to the amount of closing brackets
         amount_of_bracket(infix_expression)
 
-        # Checks if after a tilda there is another tilda before a number comes
-        check_tilda(infix_expression)
-
         # Converts all the chars which contain a number to the true float number.
         infix_expression_list = Convert.convert_chars_to_numbers(infix_expression)
+
+        # Checks if after a tilda there is another tilda before a number comes
+        check_tilda(infix_expression_list)
 
         # Checks if operator-operand order is legal
         operator_operand_order(infix_expression_list)

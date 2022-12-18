@@ -118,7 +118,9 @@ def factorial(number: int) -> int:
     :param number: The number which is being multiplied by all the native numbers before it
     :return: The the multiplication of number with all the native numbers before it
     """
-    if number > 170:
+    if number != int(number) or number < 0:
+        raise ValueError("Number in factorial must be positive and not contain a decimal point")
+    elif number > 170:
         raise ValueError("Number too big for factorial")
     if number == 1:
         return number

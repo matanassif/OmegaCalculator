@@ -49,10 +49,10 @@ def convert_chars_to_numbers(expression: str) -> list:
     :return: The expression which single chars are assembled as numbers
     """
     converted_numbers_expression = list()
-    decimal_point_number = 0
     expression_index = 0
     while expression_index < len(expression):
         string_number = ""
+        decimal_point_number = 0
 
         # Converts chars to a string of a number
         while expression_index < len(expression) and (expression[expression_index].isnumeric() or
@@ -98,7 +98,9 @@ def unary_minus_to_tilda(expression: list) -> list:
         if expression[expression_index] == '-':
 
             # The minus is not unary and should be converted to '-' or '+' depending on the amount of minuses
-            if expression_index > 0 and type(expression[expression_index-1]) == float:
+            if expression_index > 0 and (type(expression[expression_index-1]) == float 
+                                         or Config.position[expression[expression_index-1]] == "right"
+                                         or Config.position[expression[expression_index-1]] == ")"):
                 minus_counter = 0
                 while expression_index < len(expression) and expression[expression_index] == '-':
                     minus_counter += 1
