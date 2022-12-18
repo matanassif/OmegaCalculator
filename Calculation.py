@@ -99,9 +99,11 @@ def calculating(expression: list) -> float:
     """
     try:
         postfix_form = convert_to_postfix(expression)
-        print(calculate_postfix(postfix_form))
+        print(f"The result of the given expression is: {calculate_postfix(postfix_form)}")
         return calculate_postfix(postfix_form)
     except Exceptions.ComplexNumberException as cne:
         print(str(cne))
     except Exceptions.FactorialException as fe:
         print(str(fe))
+    except ValueError as ve:
+        print(str(ve))

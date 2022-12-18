@@ -21,10 +21,10 @@ def main():
     Validates the mathematical expression and calculates the result
     :return: The value of the mathematical expression
     """
-    infix_expression_list = input_and_validation()
-    if infix_expression_list is not None:
-        Calc.calculating(infix_expression_list)
-    main()
+    while True:
+        infix_expression_list = input_and_validation()
+        if infix_expression_list is not None:
+            Calc.calculating(infix_expression_list)
 
 
 if __name__ == '__main__':

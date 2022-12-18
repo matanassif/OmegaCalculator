@@ -64,7 +64,7 @@ def validation_previous_right(current: str, previous_element):
     :return: Raises an exception if the operator's place is illegal
     """
     # If the operator can appear more than once in a row, the previous element may be the same operator
-    message = f"The element {current} should be after a number"
+    message = f"The element {current} should be after a number or a right positioned operator"
     if current in Config.in_a_row_operators:
         if previous_element == current:
             return
@@ -83,7 +83,7 @@ def validation_next_right(current: str, next_element):
     :return: Raises an exception if the operator's place is illegal
     """
     # If the operator can appear more than once in a row, the next element may be the same operator
-    message = f"The element {current} should be followed by a mid positioned operator or a '('"
+    message = f"The element {current} should be followed by a mid or right positioned operator or a '('"
     if current in Config.in_a_row_operators:
         if next_element == current:
             return
@@ -105,13 +105,13 @@ def operator_operand_order_right(current: str, previous_element, next_element):
     if previous_element is None:
         raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning")
 
-    # Before the element must be a number or a mid positioned operator or a closing bracket
-    elif type(previous_element) != float:
+    # Before the element must be a number or a right positioned operator or a closing bracket
+    elif type(previous_element) != float and Config.position[previous_element] != "right":
         validation_previous_right(current, previous_element)
 
     # After the element must be a number or a mid positioned operator or an opening bracket
     elif next_element is not None and type(next_element) != float and Config.position[next_element] != "mid" \
-            and next_element != ')':
+            and next_element != ')' and Config.position[next_element] != "right":
         validation_next_right(current, next_element)
 
 
@@ -143,7 +143,7 @@ def validation_next_left(current: str, next_element):
     :return: Raises an exception if the operator's place is illegal
     """
     # If the operator can appear more than once in a row, the next element may be the same operator
-    message = f"The element {current} should be followed by a number"
+    message = f"The element {current} should be followed by a number or a minus or a '("
     if current in Config.in_a_row_operators:
         if next_element == current:
             return
@@ -171,7 +171,7 @@ def operator_operand_order_left(current: str, previous_element, next_element):
         validation_previous_left(current, previous_element)
 
     # After the operator must be a number or a mid positioned operator or a closing bracket
-    elif type(next_element) != float:
+    elif type(next_element) != float and next_element != '-' and next_element != '(':
         validation_next_left(current, next_element)
 
 
@@ -213,6 +213,19 @@ def validation_next_mid(current: str, next_element):
     raise Exceptions.NextElementException(message)
 
 
+def check_minus(current: str, previous_element, next_element):
+    """
+    Checks the validation of the minus (-) operator
+    :param current: The current element in the expression
+    :param previous_element: The previous element in the expression
+    :param next_element: The next element in the expression
+    :return: Raises an error if needed
+    """
+    if type(next_element) != float and \
+            (Config.position[next_element] == "mid" or Config.position[next_element] == "right"):
+        raise Exceptions.NextElementException("After minus can not be a mid or right positioned operator")
+
+
 def operator_operand_order_mid(current: str, previous_element, next_element):
     """
     Checks if the validation of the positioning of a mid positioned operator
@@ -225,13 +238,17 @@ def operator_operand_order_mid(current: str, previous_element, next_element):
     if next_element is None or (previous_element is None and previous_element in Config.beginning_operators):
         raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning or the end")
 
+    elif current == '-':
+        check_minus(current, previous_element, next_element)
+
     # Before the operator must be a number or a right positioned operator or a closing bracket
     elif previous_element is not None and type(previous_element) != float \
             and Config.position[previous_element] != "right" and previous_element != ')':
         validation_previous_mid(current, previous_element)
 
     # After the operator must be a number or a left positioned operator or an opening bracket
-    elif type(next_element) != float and Config.position[next_element] != "left" and next_element != '(':
+    elif type(next_element) != float and Config.position[next_element] != "left" and next_element != '(' \
+            and next_element != '-':
         validation_next_mid(current, next_element)
 
 
@@ -244,10 +261,10 @@ def check_opening_bracket(current: str, previous_element, next_element):
     :return: Raises an error if needed
     """
     # The previous element can be only a number or a right positioned operator or a mid positioned operator
-    if previous_element is not None and Config.position[previous_element] != "right" \
+    if previous_element is not None and Config.position[previous_element] != "left" \
             and Config.position[previous_element] != "mid":
 
-        raise Exceptions.PreviousElementException(f"The element {current} should be followed by "
+        raise Exceptions.PreviousElementException(f"The element {current} should be "
                                                   f"after a left positioned operator or a number")
 
     # The next element can be only a number or a left positioned operator or a beginning operator

@@ -105,7 +105,7 @@ def unary_minus_to_tilda(expression: list) -> list:
                     expression_index += 1
 
                 expression_index -= 1
-                if minus_counter % 2 == 0:
+                if minus_counter % 2 != 0:
                     removed_additional_minuses.append('-')
                 else:
                     removed_additional_minuses.append('+')
