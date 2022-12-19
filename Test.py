@@ -1,7 +1,6 @@
 # This file contains the tests of the calculator
 
 import pytest
-
 import Convertion
 import Validation
 import Calculation

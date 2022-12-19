@@ -25,6 +25,7 @@ def main():
         infix_expression_list = input_and_validation()
         if infix_expression_list is not None and type(infix_expression_list) != str:
             Calc.calculating(infix_expression_list)
+        # If the there is an exception which is not EOF
         elif infix_expression_list is not None and type(infix_expression_list) == str:
             print(infix_expression_list)
             continue

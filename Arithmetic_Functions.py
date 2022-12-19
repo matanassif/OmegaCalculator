@@ -129,6 +129,8 @@ def factorial(number: int) -> int:
         elif number == 0:
             return 1
         return number * factorial(number - 1)
+
+    # For numbers which are too big
     except RecursionError:
         raise ValueError("Result is too big for factorial")
 

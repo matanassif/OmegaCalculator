@@ -92,7 +92,7 @@ def calculate_postfix(expression: list) -> float:
 
 def calculating(expression: list) -> float:
     """
-    Converts the mathematical expression from infix form to postfix form in order to make the calculation simpler
+    Converts the mathematical expression from infix to postfix form in order to make the calculation simpler
     and then calculates it
     :param expression: mathematical expression in infix form
     :return: Result of the mathematical expression

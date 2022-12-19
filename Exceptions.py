@@ -74,7 +74,7 @@ class DecimalPointWithoutNumberException(Exception):
 
 class FirstOrLastElementException(Exception):
     """
-    The exception is raised when the first or last element can not be placed in the beginning or the end of the expression
+    The exception is raised when the first or last element can't be placed in the beginning or the end of the expression
     """
     def __init__(self, message):
         super().__init__(message)

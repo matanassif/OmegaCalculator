@@ -154,6 +154,7 @@ def shorten_tilda(expression: list) -> list:
             if tilda_counter % 2 != 0:
                 no_tilda_sequences.append('~')
 
+        # Adds every element which is not a tilda
         else:
             no_tilda_sequences.append(expression[expression_index])
 

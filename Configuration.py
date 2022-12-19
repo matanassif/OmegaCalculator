@@ -31,5 +31,5 @@ beginning_operators = ['-', '~', '(']
 # A list of all the operators which allowed to be in the end of the expression
 end_operators = ['!', '#', ')']
 
-# A list of all the operators which allowed to be in next to in a row
+# A list of all the operators which allowed to be in sequence of themselves
 in_a_row_operators = ['-', '!']

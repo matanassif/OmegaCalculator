@@ -412,7 +412,7 @@ def validate_and_convert(expression: str) -> list:
 
 def catch_exceptions(expression: str):
     """
-    Checks validation and raises an exception if fails
+    Checks validation before calculation and raises an exception if fails
     :param expression: The given mathematical expression
     :return: raises an exception if needed
     """
