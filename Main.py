@@ -23,8 +23,13 @@ def main():
     """
     while True:
         infix_expression_list = input_and_validation()
-        if infix_expression_list is not None:
+        if infix_expression_list is not None and type(infix_expression_list) != str:
             Calc.calculating(infix_expression_list)
+        elif infix_expression_list is not None and type(infix_expression_list) == str:
+            print(infix_expression_list)
+            continue
+        else:
+            break
 
 
 if __name__ == '__main__':

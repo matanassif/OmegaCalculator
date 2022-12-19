@@ -16,7 +16,7 @@ position = {'+': "mid", '-': "mid", '*': "mid", '/': "mid", '^': "mid", '%': "mi
             '&': "mid", '@': "mid", '~': "left", '!': "right", '#': "right", '(': None, ')': None}
 
 # A list of all white spaces
-white_spaces = [" ", "\t", "\n"]
+white_spaces = [" ", "\t", "\n", "\v", "\r", "\f"]
 
 # A list of all legal elements in the given mathematical expression
 legal_elements = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ' ', '+', '-', '*', '/', '^', '%', '$', '&',

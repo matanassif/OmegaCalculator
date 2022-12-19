@@ -419,22 +419,22 @@ def catch_exceptions(expression: str):
     try:
         return validate_and_convert(expression)
     except Exceptions.EmptyExpressionException as eee:
-        print(str(eee))
+        return str(eee)
     except Exceptions.OnlyWhiteSpacesException as owse:
-        print(str(owse))
+        return str(owse)
     except Exceptions.IllegalElementException as iee:
-        print(str(iee))
+        return str(iee)
     except Exceptions.AmountOfBracketsException as aobe:
-        print(str(aobe))
+        return str(aobe)
     except Exceptions.TildaInARowException as tiare:
-        print(str(tiare))
+        return str(tiare)
     except Exceptions.OneDecimalPointException as odpe:
-        print(str(odpe))
+        return str(odpe)
     except Exceptions.DecimalPointWithoutNumberException as dpwne:
-        print(str(dpwne))
+        return str(dpwne)
     except Exceptions.FirstOrLastElementException as fole:
-        print(str(fole))
+        return str(fole)
     except Exceptions.PreviousElementException as pee:
-        print(str(pee))
+        return str(pee)
     except Exceptions.NextElementException as nee:
-        print(str(nee))
+        return str(nee)

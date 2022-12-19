@@ -102,14 +102,15 @@ def unary_minus_to_tilda(expression: list) -> list:
                                          or expression[expression_index-1] == '+'
                                          or Config.position[expression[expression_index-1]] == "right"
                                          or expression[expression_index-1] == ")"):
+                # Counts the minuses
                 minus_counter = 0
                 first_in_a_row_minus_index = expression[expression_index-1]
                 while expression_index < len(expression) and expression[expression_index] == '-':
                     minus_counter += 1
                     expression_index += 1
 
+                # Inserts one minus if the count is odd, otherwise inserts a '+' unless there is already a '+' before
                 expression_index -= 1
-                print(first_in_a_row_minus_index)
                 if minus_counter % 2 != 0:
                     if first_in_a_row_minus_index == '+':
                         removed_additional_minuses.pop(-1)
@@ -130,24 +131,32 @@ def unary_minus_to_tilda(expression: list) -> list:
 
 
 def shorten_tilda(expression: list) -> list:
-    less_tilda = list()
+    """
+    Shorten a sequence of tildas to one or zero
+    :param expression: The mathematical expression which every unary minus becomes a tilda
+    :return: The mathematical expression which the sequences of tildas are shorten to one or zero
+    """
+    # The expression without sequences of tildas after conversion of minuses to tildas
+    no_tilda_sequences = list()
     expression_index = 0
 
     while expression_index < len(expression):
         if expression[expression_index] == '~':
             tilda_counter = 0
 
+            # Counts the tildas
             while expression_index < len(expression) and expression[expression_index] == '~':
                 tilda_counter += 1
                 expression_index += 1
 
+            # Inserts one tilda if the count is odd, otherwise does not insert anything
             expression_index -= 1
             if tilda_counter % 2 != 0:
-                less_tilda.append('~')
+                no_tilda_sequences.append('~')
 
         else:
-            less_tilda.append(expression[expression_index])
+            no_tilda_sequences.append(expression[expression_index])
 
         expression_index += 1
 
-    return less_tilda
+    return no_tilda_sequences
