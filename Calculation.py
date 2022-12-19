@@ -98,7 +98,9 @@ def calculating(expression: list) -> float:
     :return: Result of the mathematical expression
     """
     try:
+        print(expression)
         postfix_form = convert_to_postfix(expression)
+        print(postfix_form)
         result = calculate_postfix(postfix_form)
         if result == float("inf"):
             raise OverflowError("Result is too big")

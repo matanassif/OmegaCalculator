@@ -103,7 +103,7 @@ def operator_operand_order_right(current: str, previous_element, next_element):
     """
     # Can not be first element
     if previous_element is None:
-        raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning")
+        raise Exceptions.FirstOrLastElementException(f"The element {current} can not be placed in the beginning")
 
     # Before the element must be a number or a right positioned operator or a closing bracket
     elif type(previous_element) != float and Config.position[previous_element] != "right" and previous_element != ')':
@@ -163,7 +163,7 @@ def operator_operand_order_left(current: str, previous_element, next_element):
     """
     # Can not be last element
     if next_element is None:
-        raise Exceptions.LastElementException(f"The element {current} can not be placed in the end")
+        raise Exceptions.FirstOrLastElementException(f"The element {current} can not be placed in the end")
 
     # Before the operator must be a number or a mid positioned operator or an opening bracket
     elif previous_element is not None and type(previous_element) != float and previous_element != '(' and \
@@ -234,7 +234,7 @@ def operator_operand_order_mid(current: str, previous_element, next_element):
     """
     # Checks validation if the element is the first or last
     if next_element is None or (previous_element is None and current not in Config.beginning_operators):
-        raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning or the end")
+        raise Exceptions.FirstOrLastElementException(f"The element {current} can not be placed in the beginning or the end")
 
     elif current == '-':
         check_minus(next_element)
@@ -307,14 +307,14 @@ def operator_operand_order_brackets(current: str, previous_element, next_element
     if current == '(':
         # Can not appear last in expression
         if next_element is None:
-            raise Exceptions.LastElementException(f"The element {current} can not be placed in the end")
+            raise Exceptions.FirstOrLastElementException(f"The element {current} can not be placed in the end")
 
         check_opening_bracket(current, previous_element, next_element)
 
     elif current == ')':
         # Can not appear first in expression
         if previous_element is None:
-            raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning")
+            raise Exceptions.FirstOrLastElementException(f"The element {current} can not be placed in the beginning")
 
         check_closing_bracket(current, previous_element, next_element)
 
@@ -406,6 +406,7 @@ def validate_and_convert(expression: str) -> list:
 
     # Switches unary minuses to a tilda and convert even amount of '-' to '+' according to way number 2
     infix_expression_list = Convert.unary_minus_to_tilda(infix_expression_list)
+    infix_expression_list = Convert.shorten_tilda(infix_expression_list)
     return infix_expression_list
 
 
@@ -431,10 +432,8 @@ def catch_exceptions(expression: str):
         print(str(odpe))
     except Exceptions.DecimalPointWithoutNumberException as dpwne:
         print(str(dpwne))
-    except Exceptions.FirstElementException as fee:
-        print(str(fee))
-    except Exceptions.LastElementException as lee:
-        print(str(lee))
+    except Exceptions.FirstOrLastElementException as fole:
+        print(str(fole))
     except Exceptions.PreviousElementException as pee:
         print(str(pee))
     except Exceptions.NextElementException as nee:

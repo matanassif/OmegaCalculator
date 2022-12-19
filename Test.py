@@ -177,15 +177,15 @@ def test_complex_15():
 
 
 def test_complex_16():
-    mathematical_expression = "(5+~-2@6+4@- 5%6^ 5$-8* 2) -9- (-10&8)"
+    mathematical_expression = "(5+~-2@6+4@ 5%6^ 5$-8* 2) -9- (-10&8)"
     infix_expression_list = Validation.validate_and_convert(mathematical_expression)
-    assert Calculation.calculating(infix_expression_list) == 10063.6875
+    assert Calculation.calculating(infix_expression_list) == 3700.5625
 
 
 def test_complex_17():
-    mathematical_expression = "(4!-5@3#   +4$- 5%6^ 7@4* 9) -- 10- ~(1352/-14) "
+    mathematical_expression = "(4!-5@3#   +4$ 5%6^ 7@9* 9) -- 10- ~(1352/-14) "
     infix_expression_list = Validation.validate_and_convert(mathematical_expression)
-    assert Calculation.calculating(infix_expression_list) == 18365.428571428572
+    assert Calculation.calculating(infix_expression_list) == 3515558.4285714286
 
 
 def test_tilda_in_a_row_exception():
@@ -201,20 +201,17 @@ def test_more_than_one_decimal_point():
 
 def test_next_element_exception():
     with pytest.raises(Exceptions.NextElementException):
-        expression_list = Convertion.convert_to_list("3+*4")
-        assert Validation.catch_exceptions("3+*4")
+        assert Validation.validate_and_convert("3+*4")
 
 
 def test_first_element():
-    with pytest.raises(Exceptions.FirstElementException):
-        expression_list = Convertion.convert_to_list("$5*516&6515@451")
-        assert Validation.catch_exceptions("$5*516&6515@451")
+    with pytest.raises(Exceptions.FirstOrLastElementException):
+        assert Validation.validate_and_convert("$5*516&6515@451")
 
 
 def test_last_element():
-    with pytest.raises(Exceptions.LastElementException):
-        expression_list = Convertion.convert_to_list("59*45898/564%")
-        assert Validation.catch_exceptions("59*45898/564%")
+    with pytest.raises(Exceptions.FirstOrLastElementException):
+        assert Validation.validate_and_convert("59*45898/564%")
 
 
 def test_illegal_elements():

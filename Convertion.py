@@ -101,7 +101,7 @@ def unary_minus_to_tilda(expression: list) -> list:
             if expression_index > 0 and (type(expression[expression_index-1]) == float
                                          or expression[expression_index-1] == '+'
                                          or Config.position[expression[expression_index-1]] == "right"
-                                         or Config.position[expression[expression_index-1]] == ")"):
+                                         or expression[expression_index-1] == ")"):
                 minus_counter = 0
                 first_in_a_row_minus_index = expression[expression_index-1]
                 while expression_index < len(expression) and expression[expression_index] == '-':
@@ -109,6 +109,7 @@ def unary_minus_to_tilda(expression: list) -> list:
                     expression_index += 1
 
                 expression_index -= 1
+                print(first_in_a_row_minus_index)
                 if minus_counter % 2 != 0:
                     if first_in_a_row_minus_index == '+':
                         removed_additional_minuses.pop(-1)
@@ -126,3 +127,27 @@ def unary_minus_to_tilda(expression: list) -> list:
         expression_index += 1
 
     return removed_additional_minuses
+
+
+def shorten_tilda(expression: list) -> list:
+    less_tilda = list()
+    expression_index = 0
+
+    while expression_index < len(expression):
+        if expression[expression_index] == '~':
+            tilda_counter = 0
+
+            while expression_index < len(expression) and expression[expression_index] == '~':
+                tilda_counter += 1
+                expression_index += 1
+
+            expression_index -= 1
+            if tilda_counter % 2 != 0:
+                less_tilda.append('~')
+
+        else:
+            less_tilda.append(expression[expression_index])
+
+        expression_index += 1
+
+    return less_tilda
