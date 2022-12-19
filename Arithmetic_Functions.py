@@ -53,10 +53,15 @@ def power(first_number: float, second_number: float) -> float:
     :param second_number: The exponent of the power
     :return: The result of first_number in the power of second_number
     """
-    result = first_number ** second_number
-    if isinstance(result, complex):
-        raise Exceptions.ComplexNumberException("The calculator does not support complex numbers")
-    return result
+    try:
+        if first_number == 0 and second_number == 0:
+            raise ValueError("0 to the power of 0 is undefined mathematically")
+        result = first_number ** second_number
+        if isinstance(result, complex):
+            raise Exceptions.ComplexNumberException("The calculator does not support complex numbers")
+        return result
+    except OverflowError:
+        raise ValueError("Result is too big for power")
 
 
 def modulo(first_number: float, second_number: float) -> float:
@@ -118,13 +123,14 @@ def factorial(number: int) -> int:
     :param number: The number which is being multiplied by all the native numbers before it
     :return: The the multiplication of number with all the native numbers before it
     """
-    if number != int(number) or number < 0:
-        raise ValueError("Number in factorial must be positive and not contain a decimal point")
-    elif number > 170:
-        raise ValueError("Number too big for factorial")
-    if number == 1:
-        return number
-    return number * factorial(number - 1)
+    try:
+        if number != int(number) or number < 0:
+            raise ValueError("Number in factorial must be positive and not contain a decimal point")
+        elif number == 0:
+            return 1
+        return number * factorial(number - 1)
+    except RecursionError:
+        raise ValueError("Result is too big for factorial")
 
 
 def add_digits(number: float) -> float:

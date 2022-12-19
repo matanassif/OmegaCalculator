@@ -98,18 +98,22 @@ def unary_minus_to_tilda(expression: list) -> list:
         if expression[expression_index] == '-':
 
             # The minus is not unary and should be converted to '-' or '+' depending on the amount of minuses
-            if expression_index > 0 and (type(expression[expression_index-1]) == float 
+            if expression_index > 0 and (type(expression[expression_index-1]) == float
+                                         or expression[expression_index-1] == '+'
                                          or Config.position[expression[expression_index-1]] == "right"
                                          or Config.position[expression[expression_index-1]] == ")"):
                 minus_counter = 0
+                first_in_a_row_minus_index = expression[expression_index-1]
                 while expression_index < len(expression) and expression[expression_index] == '-':
                     minus_counter += 1
                     expression_index += 1
 
                 expression_index -= 1
                 if minus_counter % 2 != 0:
+                    if first_in_a_row_minus_index == '+':
+                        removed_additional_minuses.pop(-1)
                     removed_additional_minuses.append('-')
-                else:
+                elif first_in_a_row_minus_index != '+':
                     removed_additional_minuses.append('+')
 
             # The minus is unary

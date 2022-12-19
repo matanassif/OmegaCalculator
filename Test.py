@@ -65,7 +65,7 @@ def test_simple_9():
 def test_simple_10():
     mathematical_expression = "~19*5+80+~---------17@~32"
     infix_expression_list = Validation.validate_and_convert(mathematical_expression)
-    assert Calculation.calculating(infix_expression_list) == -9.5
+    assert Calculation.calculating(infix_expression_list) == -22.5
 
 
 def test_simple_11():
@@ -202,19 +202,19 @@ def test_more_than_one_decimal_point():
 def test_next_element_exception():
     with pytest.raises(Exceptions.NextElementException):
         expression_list = Convertion.convert_to_list("3+*4")
-        assert Validation.operator_operand_order(expression_list)
+        assert Validation.catch_exceptions("3+*4")
 
 
 def test_first_element():
     with pytest.raises(Exceptions.FirstElementException):
         expression_list = Convertion.convert_to_list("$5*516&6515@451")
-        assert Validation.operator_operand_order(expression_list)
+        assert Validation.catch_exceptions("$5*516&6515@451")
 
 
 def test_last_element():
     with pytest.raises(Exceptions.LastElementException):
         expression_list = Convertion.convert_to_list("59*45898/564%")
-        assert Validation.operator_operand_order(expression_list)
+        assert Validation.catch_exceptions("59*45898/564%")
 
 
 def test_illegal_elements():

@@ -64,7 +64,7 @@ def validation_previous_right(current: str, previous_element):
     :return: Raises an exception if the operator's place is illegal
     """
     # If the operator can appear more than once in a row, the previous element may be the same operator
-    message = f"The element {current} should be after a number or a right positioned operator"
+    message = f"The element {current} should be after a number or a right positioned operator or a ')"
     if current in Config.in_a_row_operators:
         if previous_element == current:
             return
@@ -83,7 +83,7 @@ def validation_next_right(current: str, next_element):
     :return: Raises an exception if the operator's place is illegal
     """
     # If the operator can appear more than once in a row, the next element may be the same operator
-    message = f"The element {current} should be followed by a mid or right positioned operator or a '('"
+    message = f"The element {current} should be followed by a mid or right positioned operator or a ')'"
     if current in Config.in_a_row_operators:
         if next_element == current:
             return
@@ -166,7 +166,7 @@ def operator_operand_order_left(current: str, previous_element, next_element):
         raise Exceptions.LastElementException(f"The element {current} can not be placed in the end")
 
     # Before the operator must be a number or a mid positioned operator or an opening bracket
-    elif previous_element is not None and type(next_element) != float and previous_element != '(' and \
+    elif previous_element is not None and type(previous_element) != float and previous_element != '(' and \
             Config.position[previous_element] != "mid":
         validation_previous_left(current, previous_element)
 
@@ -233,7 +233,7 @@ def operator_operand_order_mid(current: str, previous_element, next_element):
     :return: Raises an error if needed
     """
     # Checks validation if the element is the first or last
-    if next_element is None or (previous_element is None and previous_element in Config.beginning_operators):
+    if next_element is None or (previous_element is None and current not in Config.beginning_operators):
         raise Exceptions.FirstElementException(f"The element {current} can not be placed in the beginning or the end")
 
     elif current == '-':
@@ -384,31 +384,39 @@ def validate_and_convert(expression: str) -> list:
     """
     Checks validation and converts the mathematical expression to an easier expression to calculate
     :param expression: The given mathematical expression
-    :return: Raises an exception if there are illegal elements in the given expression
+    :return: Infix expression in list after conversion
+    """
+    # Removes all white spaces from the mathematical expression
+    infix_expression = Convert.remove_white_spaces(expression)
+
+    # Checks if all the elements in the given expression are legal elements
+    check_legal_elements(infix_expression)
+
+    # Checks if the amount of opening bracket is equal to the amount of closing brackets
+    amount_of_bracket(infix_expression)
+
+    # Converts all the chars which contain a number to the true float number.
+    infix_expression_list = Convert.convert_chars_to_numbers(infix_expression)
+
+    # Checks if after a tilda there is another tilda before a number comes
+    check_tilda(infix_expression_list)
+
+    # Checks if operator-operand order is legal
+    operator_operand_order(infix_expression_list)
+
+    # Switches unary minuses to a tilda and convert even amount of '-' to '+' according to way number 2
+    infix_expression_list = Convert.unary_minus_to_tilda(infix_expression_list)
+    return infix_expression_list
+
+
+def catch_exceptions(expression: str):
+    """
+    Checks validation and raises an exception if fails
+    :param expression: The given mathematical expression
+    :return: raises an exception if needed
     """
     try:
-        # Removes all white spaces from the mathematical expression
-        infix_expression = Convert.remove_white_spaces(expression)
-
-        # Checks if all the elements in the given expression are legal elements
-        check_legal_elements(infix_expression)
-
-        # Checks if the amount of opening bracket is equal to the amount of closing brackets
-        amount_of_bracket(infix_expression)
-
-        # Converts all the chars which contain a number to the true float number.
-        infix_expression_list = Convert.convert_chars_to_numbers(infix_expression)
-
-        # Checks if after a tilda there is another tilda before a number comes
-        check_tilda(infix_expression_list)
-
-        # Checks if operator-operand order is legal
-        operator_operand_order(infix_expression_list)
-
-        # Switches unary minuses to a tilda and convert even amount of '-' to '+' according to way number 2
-        infix_expression_list = Convert.unary_minus_to_tilda(infix_expression_list)
-        return infix_expression_list
-
+        return validate_and_convert(expression)
     except Exceptions.EmptyExpressionException as eee:
         print(str(eee))
     except Exceptions.OnlyWhiteSpacesException as owse:

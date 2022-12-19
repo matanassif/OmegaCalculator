@@ -11,7 +11,7 @@ def input_and_validation() -> list:
     """
     try:
         mathematical_expression = input("Please enter a mathematical expression:\n")
-        return Valid.validate_and_convert(mathematical_expression)
+        return Valid.catch_exceptions(mathematical_expression)
     except EOFError:
         print("End of program")
 

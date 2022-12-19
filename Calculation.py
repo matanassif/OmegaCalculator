@@ -99,10 +99,16 @@ def calculating(expression: list) -> float:
     """
     try:
         postfix_form = convert_to_postfix(expression)
-        print(f"The result of the given expression is: {calculate_postfix(postfix_form)}")
-        return calculate_postfix(postfix_form)
+        result = calculate_postfix(postfix_form)
+        if result == float("inf"):
+            raise OverflowError("Result is too big")
+
+        print(f"The result of the given expression is: {result}")
+        return result
     except Exceptions.ComplexNumberException as cne:
         print(str(cne))
+    except OverflowError as ofe:
+        print(str(ofe))
     except Exceptions.FactorialException as fe:
         print(str(fe))
     except ValueError as ve:
